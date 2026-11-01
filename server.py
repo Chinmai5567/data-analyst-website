@@ -17,7 +17,6 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
-DB_PATH = ROOT / ".analytics_hub.sqlite3"
 
 
 def load_local_env():
@@ -34,6 +33,11 @@ def load_local_env():
 
 
 load_local_env()
+DATA_DIR = Path(os.environ.get("ANALYTICS_HUB_DATA_DIR", str(ROOT))).expanduser()
+if not DATA_DIR.is_absolute():
+    DATA_DIR = ROOT / DATA_DIR
+DATA_DIR = DATA_DIR.resolve()
+DB_PATH = DATA_DIR / ".analytics_hub.sqlite3"
 HOST = os.environ.get("ANALYTICS_HUB_HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8000"))
 SESSION_SECONDS = 60 * 60 * 24 * 14
@@ -55,6 +59,7 @@ def connect_db():
 
 
 def initialize_db():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     with connect_db() as db:
         db.execute("""CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -370,5 +375,5 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     initialize_db()
     print(f"Analytics Hub running at http://{HOST}:{PORT}")
-    print("Stop the server with Ctrl+C. Local account database: .analytics_hub.sqlite3")
+    print(f"Stop the server with Ctrl+C. Account database: {DB_PATH}")
     ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
