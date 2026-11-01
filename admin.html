@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1119">
+  <title>Analytics Hub · Admin console</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="adminLogin" class="login-card">
+      <div class="brand-mark" aria-hidden="true">AH</div>
+      <p class="eyebrow">PRIVATE ADMIN CONSOLE</p>
+      <h1>Account management</h1>
+      <p class="intro">Sign in to review accounts and manage plan access.</p>
+      <form id="adminLoginForm">
+        <label>Admin username<input id="adminUsername" autocomplete="username" required minlength="3" maxlength="40"></label>
+        <label>Password<input id="adminPassword" type="password" autocomplete="current-password" required minlength="10" maxlength="256"></label>
+        <p class="status error" id="loginError" role="alert" hidden></p>
+        <button class="primary" id="loginButton" type="submit">Sign in</button>
+      </form>
+      <a class="back-link" href="/">← Back to Analytics Hub</a>
+    </section>
+
+    <section id="adminConsole" hidden>
+      <header class="console-header">
+        <div><p class="eyebrow">PRIVATE ADMIN CONSOLE</p><h1>Account management</h1><p class="intro">Review account access and grant complimentary Pro.</p></div>
+        <div class="header-actions"><span id="adminIdentity"></span><button class="secondary" id="refreshButton" type="button">Refresh</button><button class="secondary" id="logoutButton" type="button">Sign out</button></div>
+      </header>
+      <p id="consoleStatus" class="status" role="status"></p>
+      <section class="table-card">
+        <div class="table-scroll"><table>
+          <thead><tr><th>Username</th><th>Email</th><th>Joined</th><th>Session</th><th>Plan access</th><th>Complimentary Pro</th></tr></thead>
+          <tbody id="usersBody"><tr><td colspan="6">Loading accounts…</td></tr></tbody>
+        </table></div>
+      </section>
+      <p class="footnote">Passwords and password hashes are never displayed here. A signed-in session means the account has a valid session cookie, not necessarily that the person is online right now.</p>
+    </section>
+  </main>
+  <script src="admin.js" defer></script>
+</body>
+</html>
